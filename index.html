@@ -4,59 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
     <link rel="stylesheet" href="/assets/styles.css">
     <title>Plants</title>
 </head>
-<body>
+<body onload="loadxml()">
     <div class="container px-4 text-center">
+        <div class="header">
+            <h1>Plant Catalog</h1>
+        </div>
         <div class="row gx-5">
-            <div class="col-4">
-                <h1>Click on a plant to show its information</h1>
+            <div class="col-4 sticky">
+                <div class="background-container">
+                    <h2>Click on a plant to show its information</h2>
                 <form id="plantForm">
                     <div class="form-floating mb-3">
-                        <input type="text" id="commonName" class="form-control" placeholder="#">
+                        <input type="text" name="common" id="common" class="form-control" placeholder="#">
                         <label for="commonName">Common</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" id="botanicalName" class="form-control" placeholder="#">
+                        <input type="text" name="botanical" id="botanical" class="form-control" placeholder="#">
                         <label for="botanicalName">Bottanical</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" id="zones" class="form-control" placeholder="#">
+                        <input type="text" name="zone" id="zone" class="form-control" placeholder="#">
                         <label for="zones">Zones</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" id="light" class="form-control" placeholder="#">
+                        <input type="text" name="light" id="light" class="form-control" placeholder="#">
                         <label for="light">Light</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" id="price" class="form-control" placeholder="#">
+                        <input type="text" name="price" id="price" class="form-control" placeholder="#">
                         <label for="price">Price</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" id="availability" class="form-control" placeholder="#">
+                        <input type="text" name="availability" id="availability" class="form-control" placeholder="#">
                         <label for="availability">Availability</label>
                     </div>
                     
-                    <button type="button" class="btn btn-primary" onclick="savePlantData(event)">Save</button>
+                    <button type="button" class="btn btn-primary" id="edit_button">Save</button>
                 </form>
+                </div>
+                
             </div>
             
             <div class="col">
                 <div class="table">
-                    <table class="table table-hover" id="plantTable">
-                        <thead>
-                            <tr>
-                                <th scope="col">Common</th>
-                                <th scope="col">Bottanical</th>
-                                <th scope="col">Zone</th>
-                                <th scope="col">Light</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Availability</th>
-                            </tr>
-                        </thead>
-                        <tbody id="plantTableBody" onclick="displayPlantDetails(event)" class="table-dark">
-                        </tbody>
+                    <table id="plantTable" class="table table-hover" >
                     </table>
                 </div>
                 

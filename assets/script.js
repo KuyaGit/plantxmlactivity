@@ -1,106 +1,65 @@
-var xhttp = new XMLHttpRequest();
-xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-    var xmlDoc = this.responseXML;
-    
-    // You can access and manipulate the XML document (xmlDoc) here
-    console.log(xmlDoc);
-    displayPlantCatalog(xmlDoc);
-    }
-};
-xhttp.open("GET", "assets/plant_catalog.xml", true);
-xhttp.send();
+window.editRow=editRow;
 
-var selectedPlant = null;
-
-function displayPlantCatalog(xmlDoc) {
-        var plants = xmlDoc.getElementsByTagName("PLANT");
-        var tableBody = document.getElementById("plantTableBody");
-
-        for (var i = 0; i < plants.length; i++) {
-            var plant = plants[i];
-            var commonName = plant.getElementsByTagName("COMMON")[0].textContent;
-            var botanicalName = plant.getElementsByTagName("BOTANICAL")[0].textContent;
-            var zones = plant.getElementsByTagName("ZONE")[0].textContent;
-            var light = plant.getElementsByTagName("LIGHT")[0].textContent;
-            var price = plant.getElementsByTagName("PRICE")[0].textContent;
-            var availability = plant.getElementsByTagName("AVAILABILITY")[0].textContent;
-
-            var newRow = tableBody.insertRow();
-            var commonNameCell = newRow.insertCell();
-            commonNameCell.textContent = commonName;
-            var botanicalNameCell = newRow.insertCell();
-            botanicalNameCell.textContent = botanicalName;
-            var zonesCell = newRow.insertCell();
-            zonesCell.textContent = zones;
-            var lightCell = newRow.insertCell();
-            lightCell.textContent = light;
-            var priceCell = newRow.insertCell();
-            priceCell.textContent = price;
-            var availabilityCell = newRow.insertCell();
-            availabilityCell.textContent = availability;
-
-        // Add click event listener to each row
-        newRow.addEventListener("click", function(event) {
-            var clickedPlant = event.target.parentNode;
-            selectedPlant = plants[clickedPlant.rowIndex - 1];
-            displayPlantDetails(selectedPlant);
-            });
-        }``
-    }
-function displayPlantDetails(plant) {
-    var commonNameInput = document.getElementById("commonName");
-    var botanicalNameInput = document.getElementById("botanicalName");
-    var zonesInput = document.getElementById("zones");
-    var lightInput = document.getElementById("light");
-    var priceInput = document.getElementById("price");
-    var availabilityInput = document.getElementById("availability");
-    commonNameInput.value = plant.getElementsByTagName("COMMON")[0].textContent;
-    botanicalNameInput.value = plant.getElementsByTagName("BOTANICAL")[0].textContent;
-    zonesInput.value = plant.getElementsByTagName("ZONE")[0].textContent;
-    lightInput.value = plant.getElementsByTagName("LIGHT")[0].textContent;
-    priceInput.value = plant.getElementsByTagName("PRICE")[0].textContent;
-    availabilityInput.value = plant.getElementsByTagName("AVAILABILITY")[0].textContent;
-    }
-    
-    function savePlantData(event) {
-        console.log("Button is good")
-        // Update the XML node with the new values
-        selectedPlant.getElementsByTagName("COMMON")[0].textContent = commonNameInput.value;
-        selectedPlant.getElementsByTagName("BOTANICAL")[0].textContent = botanicalNameInput.value;
-        selectedPlant.getElementsByTagName("ZONE")[0].textContent = zonesInput.value;
-        selectedPlant.getElementsByTagName("LIGHT")[0].textContent = lightInput.value;
-        selectedPlant.getElementsByTagName("PRICE")[0].textContent = priceInput.value;
-        selectedPlant.getElementsByTagName("AVAILABILITY")[0].textContent = availabilityInput.value;
-
-        // Serialize the updated XML document
-        var serializer = new XMLSerializer();
-        var updatedXmlString = serializer.serializeToString(xmlDoc);
-
-        // Perform the necessary action with the updated XML (e.g., save to a file or send to a server)
-        // ...
-
-        console.log("XML node updated successfully!");
-
-        // Update the corresponding table cell values
-        var row = document.getElementById("plantTable").rows[selectedPlant.rowIndex];
-        row.cells[0].textContent = commonNameInput.value;
-        row.cells[1].textContent = botanicalNameInput.value;
-        row.cells[2].textContent = zonesInput.value;
-        row.cells[3].textContent = lightInput.value;
-        row.cells[4].textContent = priceInput.value;
-        row.cells[5].textContent = availabilityInput.value;
-
-        // Clear the form inputs
-        commonNameInput.value = "";
-        botanicalNameInput.value = "";
-        zonesInput.value = "";
-        lightInput.value = "";
-        priceInput.value = "";
-        availabilityInput.value = "";
-
-        selectedPlant = null;
+function loadxml(){
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        displayPlantCatalog(this);
         }
+    };
+    xhttp.open("GET", "assets/plant_catalog.xml", true);
+    xhttp.send();
+}
 
-document.getElementById("plantForm").addEventListener("submit", savePlantData);
 
+    function displayPlantCatalog(xml) {
+        var i;
+        var xmlDoc = xml.responseXML;
+        var table="<tr><th>COMMON</th><th>BOTANICAL</th><th>ZONE</th><th>LIGHT</th><th>PRICE</th><th>AVAILABILITY</th></tr>";
+        var x = xmlDoc.getElementsByTagName("PLANT");
+        for (i = 0; i <x.length; i++) { 
+            table += "<tr><td>" +
+            x[i].getElementsByTagName("COMMON")[0].childNodes[0].nodeValue +
+            "</td><td>" +
+            x[i].getElementsByTagName("BOTANICAL")[0].childNodes[0].nodeValue +
+            "</td><td>" +
+            x[i].getElementsByTagName("ZONE")[0].childNodes[0].nodeValue +
+            "</td><td>" +
+            x[i].getElementsByTagName("LIGHT")[0].childNodes[0].nodeValue +
+            "</td><td>" +
+            x[i].getElementsByTagName("PRICE")[0].childNodes[0].nodeValue +
+            "</td><td>" +
+            x[i].getElementsByTagName("AVAILABILITY")[0].childNodes[0].nodeValue +
+            "</td></tr>";
+        }
+        document.getElementById("plantTable").innerHTML = table;
+    
+        var table = document.getElementById("plantTable"), rIndex;
+    
+        for (var i = 1; i < table.rows.length; i++) {
+            table.rows[i].onclick=function() {
+                rIndex = this.rowIndex;
+    
+                document.getElementById('common').value = this.cells[0].innerHTML;
+                document.getElementById('botanical').value = this.cells[1].innerHTML;
+                document.getElementById('zone').value = this.cells[2].innerHTML;
+                document.getElementById('light').value = this.cells[3].innerHTML;
+                document.getElementById('price').value = this.cells[4].innerHTML;
+                document.getElementById('availability').value = this.cells[5].innerHTML;
+            };
+        }
+    
+        var change = document.getElementById('edit_button');
+        change.addEventListener('click', editRow);
+    
+        function editRow(){
+            table.rows[rIndex].cells[0].innerHTML = document.getElementById("common").value;
+            table.rows[rIndex].cells[1].innerHTML = document.getElementById("botanical").value;
+            table.rows[rIndex].cells[2].innerHTML = document.getElementById("zone").value;
+            table.rows[rIndex].cells[3].innerHTML = document.getElementById("light").value;
+            table.rows[rIndex].cells[4].innerHTML = document.getElementById("price").value;
+            table.rows[rIndex].cells[5].innerHTML = document.getElementById("availability").value;
+    
+            
+        }
+    }

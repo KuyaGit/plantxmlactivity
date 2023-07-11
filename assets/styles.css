@@ -1,3 +1,7 @@
+body{
+    background: linear-gradient(180deg, #2c0d2e 0%, #a3cee9 100%);
+    font-family: Arial, Helvetica, sans-serif;
+}
 .container{
     padding: 10vh;
 }
@@ -6,4 +10,32 @@
 }
 .col{
     border-radius: 10px;
+}
+
+table,th,td {
+    border-collapse: separate;
+    text-align: center;
+}
+h2{
+    font-size: 20px;
+    color: white;
+    margin-bottom: 8%;
+}
+.background-container{
+    background-color: #076780;
+    border-radius: 10px;
+    padding: 23px;
+    width: 369px;
+    height: 40rem;
+}
+h1{
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 40px;
+    color: white;
+    margin-bottom: 5%;
+}
+.sticky {
+    position: sticky;
+    top: 0;
 }
